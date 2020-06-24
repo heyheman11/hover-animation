@@ -8,8 +8,13 @@ window.addEventListener("load", () => {
   let myCoordsObject = pointerObject();
 
   const offSetCalculation = (mouseCoordinate) => {
-    const value = -Math.pow(mouseCoordinate / 40, 2) + 100;
-    return Math.floor(value);
+    if (mouseCoordinate === 0) {
+      return mouseCoordinate;
+    }
+    if (mouseCoordinate > 0) {
+      return Math.floor(-Math.pow(mouseCoordinate / 40, 2) + 100);
+    }
+    return -Math.floor(-Math.pow(mouseCoordinate / 40, 2) + 100);
   };
 
   // middle point
@@ -31,10 +36,16 @@ window.addEventListener("load", () => {
     myCoordsObject.update(event.clientX, event.clientY);
     const xAndY = myCoordsObject.getCoordinates();
 
-    console.log(offSetCalculation(xAndY.x))
+    console.log(offSetCalculation(xAndY.x));
 
-    imageContainerElemenet.style.setProperty('--x-offset', `${offSetCalculation(xAndY.x)}px`);
-    imageContainerElemenet.style.setProperty('--y-offset', `${offSetCalculation(xAndY.y)}px`);
+    imageContainerElemenet.style.setProperty(
+      "--x-offset",
+      `${offSetCalculation(xAndY.x)}px`
+    );
+    imageContainerElemenet.style.setProperty(
+      "--y-offset",
+      `${offSetCalculation(xAndY.y)}px`
+    );
     // console.log("X: ", offSetCalculation(xAndY.x))
     // console.log("Y: ", offSetCalculation(xAndY.y))
   });
