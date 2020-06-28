@@ -19,10 +19,12 @@ const offSetCalculation = (mouseCoordinate) => {
   return -(mouseCoordinate / 4);
 };
 
+const CURSOR_BASE_CLASS_NAME = "cursor-follow"
+
 window.addEventListener("load", () => {
   const imageContainer = document.body.querySelector(".image-content");
   const image = imageContainer.querySelector("img");
-  // const backgroundElement = document.body.querySelector(".body-content");
+  const cursorCircle = document.body.querySelector(`.${CURSOR_BASE_CLASS_NAME}`);
 
   let myCoordsObject = cursorCoordinateHelper();
   setImageOverlayDimensions(imageContainer, {
@@ -30,15 +32,8 @@ window.addEventListener("load", () => {
     height: image.height,
   });
 
-  // Quadratic soltution, not finalised
-  // const offSetCalculation = (mouseCoordinate) => {
-  //   if (mouseCoordinate > 0) {
-  //     return Math.floor(Math.pow(mouseCoordinate / 40, 2) - 100);
-  //   }
-  //   return Math.floor(-Math.pow(mouseCoordinate / 40, 2) + 100);
-  // };
-
   imageContainer.addEventListener("mouseenter", (event) => {
+    cursorCircle.style.removeProperty("visibility");
     image.style.removeProperty("transition");
     myCoordsObject.init(
       0,
@@ -48,11 +43,19 @@ window.addEventListener("load", () => {
       imageContainer.offsetHeight,
       imageContainer.offsetWidth
     );
+    document.body.style.setProperty("cursor", "none");
+    cursorCircle.className = `${CURSOR_BASE_CLASS_NAME}__active`;
   });
 
   imageContainer.addEventListener("mousemove", (event) => {
     myCoordsObject.update(event.clientX, event.clientY);
     const currentCoordinates = myCoordsObject.getCoordinates();
+
+    const cursorX = event.clientX;
+    const cursorY = event.clientY;
+
+    cursorCircle.style.setProperty("--cursor-x", `${cursorX - 40}px`);
+    cursorCircle.style.setProperty("--cursor-y", `${cursorY - 40}px`);
 
     image.style.setProperty(
       "--x-offset",
@@ -63,10 +66,6 @@ window.addEventListener("load", () => {
       "--y-offset",
       `${offSetCalculation(currentCoordinates.y)}px`
     );
-
-    // const colourChangeHex = colourChange(currentCoordinates);
-    // console.log(colourChangeHex);
-    // backgroundElement.style.background = `#${colourChangeHex}`;
   });
 
   // reset the image
@@ -74,23 +73,8 @@ window.addEventListener("load", () => {
     image.style.setProperty("--x-offset", "0");
     image.style.setProperty("--y-offset", "0");
     image.style.setProperty("transition", "transform 0.3s ease-out");
+
+    document.body.style.setProperty("cursor", "auto");
+    cursorCircle.className = CURSOR_BASE_CLASS_NAME;
   });
 });
-
-const colourChange = ({ x, y }) => {
-  // get cursor number x, y
-  // find percentage of (x + 400) + (y + 400) / (width + height)
-  // use percentage to and find %/100 *  255 + 255 + 255
-  // convert to hex and set colour
-  const percentage = (x + y + 800) / 1600;
-  const colourKey = Math.floor(percentage * (255 + 255 + 255));
-  let colourKeyString = colourKey.toString(16);
-  // console.log(colourKeyString)
-  // colourKeyString.length < 3 ? colourKeyString
-  if (colourKeyString.length < 3) {
-    colourKeyString += "0";
-  }
-  colourKeyString.padEnd(3 - colourKeyString, "0");
-  return colourKeyString;
-  // return getHexValue(colourKeyString);
-};
