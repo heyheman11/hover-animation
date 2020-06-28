@@ -1,97 +1,100 @@
-import "./index.css";
+import { cursorCoordinateHelper } from "./cursor";
+import "./index.scss";
 
 window.addEventListener("load", () => {
-  const imageContainerElemenet = document.body.querySelector(
-    ".image-container"
+  const imageContainerElement = document.body.querySelector(".image-content");
+  const actualImageElement = imageContainerElement.querySelector("img");
+  // const backgroundElement = document.body.querySelector(".body-content");
+
+  let myCoordsObject = cursorCoordinateHelper();
+
+  // set max width of image overlay
+  const imageSizes = { width: actualImageElement.width, height: actualImageElement.height };
+
+  // This is after I solved x + y = 675 (an example half width of image)
+  // where y = x/4
+  const maxWidthOfOverlay = Math.floor(0.8 * imageSizes.width);
+  imageContainerElement.style.setProperty(
+    "--overlay-width",
+    `${maxWidthOfOverlay}px`
+  );
+  const maxHeightOfOverlay = Math.floor(0.8 * imageSizes.height);
+  imageContainerElement.style.setProperty(
+    "--overlay-height",
+    `${maxHeightOfOverlay}px`
   );
 
-  let myCoordsObject = pointerObject();
 
+  // Quadratic soltution, not finalised
+  // const offSetCalculation = (mouseCoordinate) => {
+  //   if (mouseCoordinate > 0) {
+  //     return Math.floor(Math.pow(mouseCoordinate / 40, 2) - 100);
+  //   }
+  //   return Math.floor(-Math.pow(mouseCoordinate / 40, 2) + 100);
+  // };
+
+  // Simple linear based solution
   const offSetCalculation = (mouseCoordinate) => {
-    if (mouseCoordinate === 0) {
-      return mouseCoordinate;
-    }
-    if (mouseCoordinate > 0) {
-      return Math.floor(-Math.pow(mouseCoordinate / 40, 2) + 100);
-    }
-    return -Math.floor(-Math.pow(mouseCoordinate / 40, 2) + 100);
+    return -(mouseCoordinate / 4);
   };
 
   // middle point
-  console.log(Math.floor(imageContainerElemenet.offsetWidth / 2));
-  console.log(Math.floor(imageContainerElemenet.offsetHeight / 2));
+  console.log(Math.floor(imageContainerElement.offsetWidth / 2));
+  console.log(Math.floor(imageContainerElement.offsetHeight / 2));
 
-  imageContainerElemenet.addEventListener("mouseenter", (event) => {
+  imageContainerElement.addEventListener("mouseenter", (event) => {
+    actualImageElement.style.removeProperty("transition");
     myCoordsObject.init(
       0,
       0,
-      imageContainerElemenet.offsetTop,
-      imageContainerElemenet.offsetLeft,
-      imageContainerElemenet.offsetHeight,
-      imageContainerElemenet.offsetWidth
+      imageContainerElement.offsetTop,
+      imageContainerElement.offsetLeft,
+      imageContainerElement.offsetHeight,
+      imageContainerElement.offsetWidth
     );
   });
 
-  imageContainerElemenet.addEventListener("mousemove", (event) => {
+  imageContainerElement.addEventListener("mousemove", (event) => {
     myCoordsObject.update(event.clientX, event.clientY);
-    const xAndY = myCoordsObject.getCoordinates();
+    const currentCoordinates = myCoordsObject.getCoordinates();
 
-    console.log(offSetCalculation(xAndY.x));
-
-    imageContainerElemenet.style.setProperty(
+    actualImageElement.style.setProperty(
       "--x-offset",
-      `${offSetCalculation(xAndY.x)}px`
+      `${offSetCalculation(currentCoordinates.x)}px`
     );
-    imageContainerElemenet.style.setProperty(
+
+    actualImageElement.style.setProperty(
       "--y-offset",
-      `${offSetCalculation(xAndY.y)}px`
+      `${offSetCalculation(currentCoordinates.y)}px`
     );
-    // console.log("X: ", offSetCalculation(xAndY.x))
-    // console.log("Y: ", offSetCalculation(xAndY.y))
+
+    // const colourChangeHex = colourChange(currentCoordinates);
+    // console.log(colourChangeHex);
+    // backgroundElement.style.background = `#${colourChangeHex}`;
+  });
+
+  // reset the image 
+  imageContainerElement.addEventListener("mouseleave", () => {
+    actualImageElement.style.setProperty("--x-offset", "0");
+    actualImageElement.style.setProperty("--y-offset", "0");
+    actualImageElement.style.setProperty("transition", "all 0.5s ease-out");
   });
 });
 
-const pointerObject = () => {
-  const coordinatesObject = {
-    x: 0,
-    y: 0,
-    offsetTop: 0,
-    offsetLeft: 0,
-    height: 0,
-    width: 0,
-  };
-
-  const updateCoordinate = (newValue, direction) => {
-    if (direction === "hori") {
-      return (
-        newValue -
-        coordinatesObject.offsetLeft -
-        Math.floor(coordinatesObject.width / 2)
-      );
-    }
-    return (
-      newValue -
-      coordinatesObject.offsetTop -
-      Math.floor(coordinatesObject.height / 2)
-    );
-  };
-
-  return {
-    init: (newX, newY, offsetTop, offsetLeft, height, width) => {
-      coordinatesObject.x = updateCoordinate(newX, "hori");
-      coordinatesObject.y = updateCoordinate(newY, "vert");
-      coordinatesObject.offsetTop = offsetTop;
-      coordinatesObject.offsetLeft = offsetLeft;
-      coordinatesObject.height = height;
-      coordinatesObject.width = width;
-    },
-    update: (newX, newY) => {
-      coordinatesObject.x = updateCoordinate(newX, "hori");
-      coordinatesObject.y = updateCoordinate(newY, "vert");
-    },
-    getCoordinates: () => ({
-      x: coordinatesObject.x,
-      y: coordinatesObject.y,
-    }),
-  };
+const colourChange = ({ x, y }) => {
+  // get cursor number x, y
+  // find percentage of (x + 400) + (y + 400) / (width + height)
+  // use percentage to and find %/100 *  255 + 255 + 255
+  // convert to hex and set colour
+  const percentage = (x + y + 800) / 1600;
+  const colourKey = Math.floor(percentage * (255 + 255 + 255));
+  let colourKeyString = colourKey.toString(16);
+  // console.log(colourKeyString)
+  // colourKeyString.length < 3 ? colourKeyString
+  if (colourKeyString.length < 3) {
+    colourKeyString += "0";
+  }
+  colourKeyString.padEnd(3 - colourKeyString, "0");
+  return colourKeyString;
+  // return getHexValue(colourKeyString);
 };
