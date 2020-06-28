@@ -1,27 +1,10 @@
-.headings {
+.image-container {
   display: flex;
-  justify-content: space-between;
-}
-
-.body-content {
-  height: 100vh;
-  padding: 20px;
-}
-
-h2 {
-  display: inline-block;
-}
-
-body {
-  margin: 0;
-}
-
-* {
-  box-sizing: content-box;
+  align-items: center;
+  justify-content: center;
 }
 
 .image-content {
-  transition: all 2s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -34,7 +17,6 @@ body {
   &::after {
     content: "";
     box-shadow: inset 0px 0px 20px 2px rgba(0, 0, 0, 1);
-    top: 20px;
     position: absolute;
     width: var(--overlay-width);
     height: var(--overlay-height);
@@ -45,10 +27,4 @@ body {
     --y-offset: 0;
     transform: translate(var(--x-offset), var(--y-offset));
   }
-}
-
-.image-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
