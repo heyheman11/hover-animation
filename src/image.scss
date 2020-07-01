@@ -2,6 +2,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  --cursor-x: 0;
+  --cursor-y: 0;
 }
 
 .cursor-follow {
@@ -12,8 +14,7 @@
   width: 80px;
   z-index: 1;
   border-radius: 75%;
-  --cursor-x: 0;
-  --cursor-y: 0;
+
   left: var(--cursor-x);
   top: var(--cursor-y);
   opacity: 0;

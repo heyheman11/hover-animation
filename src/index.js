@@ -22,6 +22,7 @@ const offSetCalculation = (mouseCoordinate) => {
 const CURSOR_BASE_CLASS_NAME = "cursor-follow"
 
 window.addEventListener("load", () => {
+  const fullEffectContainer = document.body.querySelector(".image-container");
   const imageContainer = document.body.querySelector(".image-content");
   const image = imageContainer.querySelector("img");
   const cursorCircle = document.body.querySelector(`.${CURSOR_BASE_CLASS_NAME}`);
@@ -54,8 +55,8 @@ window.addEventListener("load", () => {
     const cursorX = event.clientX;
     const cursorY = event.clientY;
 
-    cursorCircle.style.setProperty("--cursor-x", `${cursorX - 40}px`);
-    cursorCircle.style.setProperty("--cursor-y", `${cursorY - 40}px`);
+    fullEffectContainer.style.setProperty("--cursor-x", `${cursorX - 40}px`);
+    fullEffectContainer.style.setProperty("--cursor-y", `${cursorY - 40}px`);
 
     image.style.setProperty(
       "--x-offset",

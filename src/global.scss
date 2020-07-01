@@ -4,7 +4,7 @@
 }
 
 .body-content {
-  height: 100vh;
+  height: calc(100vh - 40px);
   padding: 20px;
 }
 
@@ -15,4 +15,18 @@ h2 {
 * {
   box-sizing: content-box;
   margin: 0;
+}
+
+body {
+  background: #085078; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #85d8ce,
+    #085078
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #85d8ce,
+    #085078
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
