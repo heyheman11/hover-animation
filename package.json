@@ -1,7 +1,8 @@
 {
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack"
+    "build": "webpack",
+    "build:gh": "webpack --output-path ./docs"
   },
   "devDependencies": {
     "css-loader": "^3.6.0",
