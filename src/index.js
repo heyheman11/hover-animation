@@ -1,4 +1,5 @@
 import { cursorCoordinateHelper } from "./cursor";
+import { setUpImageContainer } from "./image";
 import "./global.scss";
 import "./image.scss";
 
@@ -21,16 +22,17 @@ const offSetCalculation = (mouseCoordinate) => {
 
 const CURSOR_BASE_CLASS_NAME = "cursor-follow"
 
-window.addEventListener("load", () => {
+window.addEventListener("load", async () => {
+  await setUpImageContainer();
   const fullEffectContainer = document.body.querySelector(".image-container");
   const imageContainer = document.body.querySelector(".image-content");
   const image = imageContainer.querySelector("img");
   const cursorCircle = document.body.querySelector(`.${CURSOR_BASE_CLASS_NAME}`);
 
-  let myCoordsObject = cursorCoordinateHelper();
+  const myCoordsObject = cursorCoordinateHelper();
   setImageOverlayDimensions(imageContainer, {
-    width: image.width,
-    height: image.height,
+    width: image.naturalWidth,
+    height: image.naturalHeight,
   });
 
   imageContainer.addEventListener("mouseenter", (event) => {
@@ -79,3 +81,9 @@ window.addEventListener("load", () => {
     cursorCircle.className = CURSOR_BASE_CLASS_NAME;
   });
 });
+
+
+// TO-DO: 
+// 1. Create image element on load
+// 2. Input to allow custom images
+// 3. Loading state
