@@ -1,7 +1,9 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin"); //installed via npm
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyPlugin = require('copy-webpack-plugin');
 const webpack = require("webpack");
 const path = require("path");
+const copyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: "./src/index.js",
@@ -29,5 +31,13 @@ module.exports = {
     new MiniCssExtractPlugin({
       fileName: "[name].[hash].css",
     }),
+    new copyWebpackPlugin({
+      patterns: [
+        {
+          from: "assets",
+          to: "assets"
+        }
+      ]
+    })
   ],
 };
