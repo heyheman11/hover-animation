@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack"
+    "build": "export GH_PATH='/hover-animation/' && webpack"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^6.0.3",

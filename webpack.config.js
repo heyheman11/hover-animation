@@ -1,14 +1,15 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin"); //installed via npm
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CopyPlugin = require('copy-webpack-plugin');
 const webpack = require("webpack");
 const path = require("path");
 const copyWebpackPlugin = require("copy-webpack-plugin");
 
+console.log(process.env.GH_PATH);
 module.exports = {
   entry: "./src/index.js",
   output: {
     path: path.resolve(__dirname, "dist"),
+    publicPath: process.env.GH_PATH || "/",
   },
   module: {
     rules: [
@@ -35,9 +36,9 @@ module.exports = {
       patterns: [
         {
           from: "assets",
-          to: "assets"
-        }
-      ]
-    })
+          to: "assets",
+        },
+      ],
+    }),
   ],
 };
