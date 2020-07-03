@@ -6,10 +6,10 @@ const setUpImageContainer = async () => {
   const imageContentContainerDiv = document.createElement("DIV");
   imageContentContainerDiv.classList.add("image-content");
   const image = document.createElement("IMG");
-  image.setAttribute(
-    "src",
-    `${__webpack_public_path__ || "/"}assets/rodeo.jpg`
-  );
+
+  console.log(process.env.GH_PATH);
+
+  image.setAttribute("src", `${process.env.GH_PATH || "/"}assets/rodeo.jpg`);
 
   image.setAttribute("alt", "alt text");
 
