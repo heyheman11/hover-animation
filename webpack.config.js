@@ -8,7 +8,7 @@ console.log(process.env.GH_PATH);
 module.exports = {
   entry: "./src/index.js",
   output: {
-    path: path.resolve(__dirname, "public"),
+    path: path.resolve(__dirname, "dist"),
   },
   module: {
     rules: [
@@ -22,6 +22,13 @@ module.exports = {
           "css-loader",
           "sass-loader",
         ],
+      },
+      {
+        test: /\.(jpe?g)$/i,
+        loader: "file-loader",
+        options: {
+          name: "[path][name].[ext]",
+        },
       },
     ],
   },

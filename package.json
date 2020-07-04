@@ -1,11 +1,13 @@
 {
   "scripts": {
-    "start": "webpack-dev-server",
-    "build": "export GH_PATH='/hover-animation/' && webpack"
+    "start": "webpack-dev-server --open",
+    "build": "webpack --mode=production && cp -r dist/* public",
+    "build:gh": "export GH_PATH='/hover-animation/' && webpack --mode=production && cp -r dist/* public"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^6.0.3",
     "css-loader": "^3.6.0",
+    "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.3.0",
     "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.14.1",

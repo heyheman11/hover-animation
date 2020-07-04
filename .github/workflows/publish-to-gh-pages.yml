@@ -20,7 +20,7 @@ jobs:
         run: yarn
 
       - name: Build code
-        run: yarn build
+        run: yarn build:gh
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
