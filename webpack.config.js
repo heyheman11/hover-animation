@@ -4,11 +4,10 @@ const path = require("path");
 const copyWebpackPlugin = require("copy-webpack-plugin");
 const webpack = require("webpack");
 
-console.log(process.env.GH_PATH);
 module.exports = {
   entry: "./src/index.js",
   output: {
-    path: path.resolve(__dirname, "public"),
+    path: path.resolve(__dirname, "dist"),
   },
   module: {
     rules: [
