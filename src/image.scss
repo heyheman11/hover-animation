@@ -51,5 +51,6 @@
     --x-offset: 0;
     --y-offset: 0;
     transform: translate(var(--x-offset), var(--y-offset));
+    flex-shrink: 0;
   }
 }

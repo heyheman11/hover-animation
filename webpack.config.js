@@ -22,6 +22,13 @@ module.exports = {
           "sass-loader",
         ],
       },
+      {
+        test: /\.(jpe?g)$/i,
+        loader: "file-loader",
+        options: {
+          name: "[path][name].[ext]",
+        },
+      },
     ],
   },
   resolve: { extensions: [".js", ".css", ".scss"] },

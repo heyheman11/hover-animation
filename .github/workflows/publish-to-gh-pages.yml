@@ -20,7 +20,7 @@ jobs:
         run: yarn
 
       - name: Build code
-        run: yarn build
+        run: yarn build:gh
 
       - name: Move built files to public
         run: cp -r dist/* public
